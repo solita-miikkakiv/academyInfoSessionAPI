@@ -32,6 +32,11 @@ export class User {
     })
     isAdmin: boolean
 
+    async comparePasswords(pass: string): Promise<Boolean> {
+        const user = this as User;
+        return await bcrypt.compare(pass, user.password).catch((e) => false)
+    }
+
     @BeforeInsert()
     @BeforeUpdate()
     async before(): Promise<void> {
