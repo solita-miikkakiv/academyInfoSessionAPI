@@ -17,9 +17,9 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
+  @Get('logindata/:id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.getLoginAmount(+id);
   }
 
   @Patch(':id')

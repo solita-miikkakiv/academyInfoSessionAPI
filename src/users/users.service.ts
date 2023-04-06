@@ -1,11 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, UnprocessableEntityException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(User) private readonly usersReporsitory: Repository<User>,
+  ) {}
+
+
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    try {
+      const user = await this.usersReporsitory.create(createUserDto);
+      return await this.usersReporsitory.save(user);
+    } catch (e) {
+      throw new UnprocessableEntityException();
+    }
+  }
+
+  async getLoginAmount(id: number): Promise<User> {
+    try {
+      return await this.usersReporsitory.findOne({ where: { id }});
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
   findAll() {
