@@ -10,6 +10,7 @@ export class AuthService {
   async signIn(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
     if (user && (await user.comparePasswords(pass))) {
+        this.usersService.incrementLoginCount(username);
         const payload = { username: user.username, sub: user.id };
         return {
           access_token: await this.jwtService.signAsync(payload),

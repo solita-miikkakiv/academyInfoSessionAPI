@@ -37,6 +37,10 @@ export class UsersService {
     return await this.usersReporsitory.findOne({where: {username}});
   }
 
+  async incrementLoginCount(username: string) {
+    await this.usersReporsitory.increment({ username }, 'loginCount', 1)
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
