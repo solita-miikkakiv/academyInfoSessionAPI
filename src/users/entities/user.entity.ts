@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString, MinLength } from 'class-validator';
 import { randomBytes } from 'crypto';
 import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -9,6 +9,7 @@ export class User {
     id: number;
 
     @IsString()
+    @MinLength(3)
     @Column({
         nullable: false,
         unique: true
@@ -16,6 +17,7 @@ export class User {
     username: string;
 
     @IsString()
+    @MinLength(6)
     @Column()
     password: string;
 
